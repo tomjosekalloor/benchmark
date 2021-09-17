@@ -1,0 +1,41 @@
+ARCH=$(shell echo `uname -m`)
+
+ifeq ($(ARCH),aarch64)
+	include ../make.aarch64
+endif
+
+ifeq ($(ARCH),riscv64)
+	include ../make.riscv64
+else
+	include ../make.cross
+endif
+
+MAGIC=-DMAGIC
+OCFLAGS+=${OPT} ${MAGIC} -I../ -I. -std=c11 -D_POSIX_TIMERS -D_POSIX_SOURCE -D_GNU_SOURCE
+CFLAGS+=${NOOPT} ${MAGIC} -I../ -I. -std=c11 -D_POSIX_TIMERS -D_POSIX_SOURCE -D_GNU_SOURCE
+
+all: bench
+
+ifneq ("$(wildcard rand_arr_args.txt)","")
+args := $(shell cat rand_arr_args.txt)
+
+randArr.h: rand_arr_args.txt
+	${PY} ../rand_c_arr.py $(args)
+
+pre_req: randArr.h
+else
+pre_req:
+endif
+
+bench: bench.c pre_req
+	${CC} ${CFLAGS} bench.c --static  -lm -o bench
+	${CC} ${CFLAGS} -S bench.c --static  -o bench.asm
+	${CC} ${OCFLAGS} bench.c --static  -lm -o bench.opt
+	${CC} ${OCFLAGS} -S bench.c --static -o bench.asm.opt
+
+clean:
+	rm -f bench bench.opt bench.asm bench.asm.opt
+
+.phony : clean all
+
+

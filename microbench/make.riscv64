@@ -1,0 +1,3 @@
+CC=clang
+OPT=-O3 
+NOOPT=-O0

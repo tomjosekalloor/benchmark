@@ -1,0 +1,29 @@
+#!/bin/sh
+
+echo "================ microbench =============="
+echo Date: `date`
+echo Kernel: `uname -a`
+echo ""
+lscpu
+echo ""
+echo "-- Compiler options:"
+echo ""
+
+case `uname -m` in
+	aarch64 )
+		cat make.aarch64
+		;;
+	x86_64 )
+		cat make.x86_64
+		;;
+esac
+
+echo ""
+echo ""
+DIRS=$(find -not -path '*/\.*' -type d \( ! -iname ".*" \))
+
+for dir in $DIRS; do
+    if [ -d $dir ]; then
+	    (cd $dir && echo ------------------------------ && echo dir: $dir && cat ./desc.txt && ./bench ) || exit 1 ;
+    fi
+done

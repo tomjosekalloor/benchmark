@@ -1,0 +1,11 @@
+# Intel/clang/gcc
+CC=clang-12
+OPT=-O3 -march=x86-64-v3 -Rpass-missed=loop-vectorized -Rpass-analysis=loop-vectorize -Rpass=loop-vectorize -no-integrated-as -Xassembler -adhln
+
+#OPT=-O3 -Rpass-missed=loop-vectorized -Rpass-analysis=loop-vectorize -Rpass=loop-vectorize -Xassembler -adhln
+
+NOOPT= -march=x86-64 -no-integrated-as -Xassembler -adhln
+
+#NOOPT= -Xassembler -adhln
+#CC=clang-12
+#OPT=-O3 -Rpass-missed=loop-vectorized -Rpass-analysis=loop-vectorize -Rpass=loop-vectorize

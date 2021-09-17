@@ -1,0 +1,2 @@
+perf_4.19 stat -o stats_results_L1.txt -r 10 -i -e instructions -e L1-dcache-loads -e L1-dcache-load-misses -e L1-icache-loads -e L1-icache-load-misses ./bench
+perf_4.19 stat -o stats_results_L2.txt -r 10 -i -e armv8_pmuv3/l2d_cache/ -e armv8_pmuv3/l2d_cache_refill/ -e armv8_pmuv3/l2d_cache_wb/ -e armv8_pmuv3/ld_retired/ -e armv8_pmuv3/mem_access/ ./bench
